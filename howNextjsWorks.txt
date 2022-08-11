@@ -1,0 +1,62 @@
+COMPILING
+next.js as a built in compiler which translates jsx, typescript and modern versions of JavaScript into vanilla JS so that all browsers can understand them. 
+Compiling refers to the process of taking code in one language and outputting it in another language or another version of that language. 
+MINIFYING
+Then, after the code is compiled it is minified which means removing all of the readable extras like comments, spaces, and indents. This decreases file sizes and improves performance. In next.js JS and CSS files are automatically minified for production.
+BUNDLING
+Bundling is the process of resolving the web of dependancies which results when developers create lots of small files to help build up larger files. These files are optimized with the goal of reducing the number of requests for files when a user visits a web page. 
+CODE SPLITTING
+Developers usually split their applications into multiple pages that can be accessed from different URLs. Each of these pages becomes a unique entry point into the application.
+Code-splitting is the process of splitting the application’s bundle into smaller chunks required by each entry point. The goal is to improve the application's initial load time by only loading the code required to run that page.
+CLIENT AND SERVER
+In the context of web applications, the client refers to the browser on a user’s device that sends a request to a server for your application code. It then turns the response it receives from the server into an interface the user can interact with.
+Server refers to the computer in a data centre that stores your application code, receives requests from a client, does some computation, and sends back an appropriate response.
+RENDERING
+Converting code written in React into HTML. It can take place on the server or the client, and it can happen at build time or on every request at runtime. Next.js offers three types of rendering methods: 
+Server-Side Rendering (pre-rendering) 
+Static Site Generation (pre-rendering) both SSR and SSG are considered pre-rendering because the work of rendering is preformed before the result is sent to the client.
+Client-Side Rendering is what a typical React app uses where the browser recieves an empty HTML shell along with the JS instructions to construct the UI. All of this work happens on the user's device. 
+Note: You can opt to use client-side rendering for specific components in your Next.js application by choosing to fetch data with React’s useEffect() (a hook) or a data fetching hook such as useSWR.
+By default Next.js pre-renders every page, which means it is generated into complete HTML in advance before it is sent to the client, so their browser doesn't need to use JS. 
+SERVER-SIDE RENDERING
+HTML of the page is generated on a server for each request. The generated HTML, JSON data, and JavaScript instructions to make the page interactive (i.e. onclick event handlers) are then sent to the client. 
+On the client, the HTML is used to show a fast non-interactive page, while React uses the JSON data and JavaScript instructions to make components interactive (for example, attaching event handlers to a button). This process is called hydration. This is a good idea if the page CANNOT be pre-rendered ahead of the usesr's request like if it contains commonly updated data or the page changes on every request. Or We could skip this and use client-side JS to populate frequently updated data. 
+In Next.js, you can opt to server-side render pages by using getServerSideProps.
+ex: export async function getServerSideProps(context) {
+  return {
+    props: {
+      // props for your component
+    },
+  };
+}
+You should use getServerSideProps only if you need to pre-render a page whose data must be fetched at request time. 
+STATIC-SITE GENERATION 
+With Static Site Generation, the HTML is generated on the server, but unlike server-side rendering, there is no server at runtime. Instead, content is generated once, at build time, when the application is deployed, and the HTML is stored in a CDN and re-used for each request. This method is good if the page can be pre-rendered ahead of the user's request (i.e. marketing pages, blog posts, e-commerce product listings, help and documentation) getStaticProps only runs server side, so we can call the database directly if needed. 
+In Next.js, you can opt to statically generate pages by using getStaticProps.
+Note: You can use Incremental Static Regeneration to create or update static pages after you’ve built your site. This means you do not have to rebuild your entire site if your data changes.
+Next.js allows us to choose the most appropriate rendering method on a page-by-page basis!
+CODE STORAGE (AFTER DEPLOYMENT)
+Origin-Servers refer to the main computer that stores and runs the original version of the application code. This computer recieves the request, does computations and sends the response. The response can be moved to a CDN too. 
+Content Delivery Network stores static content such as HTML and images in multiple locations around the world and are placed between the client and the origin server. When a new request comes in, the closest CDN location to the user cna respond with the cached result. 
+This reduces the load on the origin because the computation doesn’t have to happen on each request. It also makes it faster for the user because the response comes from a location geographically closer to them. 
+In Next.js, since pre-rendering can be done ahead of time, CDNs are well suited to store the static result of the work - making content delivery faster.
+The Edge is a generalized concept for the fringe of the network, closest to the user. CDNs could be considered part of "the Edge"  because they story static content at the fringe of the network. Edge servers are also distributed around the world but unlike CDNs they can do computations (run code). 
+This can make your application more performant because it reduces the amount of code sent to the client, and part of the user's request does not have to go all the way back to the origin server - thus reducing latency.
+In Next.js, you can run code at the Edge with Middleware, and soon with React Server Components.
+CLIENT-SIDE RENDERING 
+Statically generate (pre-render) parts of the page that do not require external data.
+When the page loads, fetch external data from the client using JavaScript and populate the remaining parts.
+This approach works well for user dashboard pages, for example. Because a dashboard is a private, user-specific page, SEO is not relevant, and the page doesn’t need to be pre-rendered. The data is frequently updated, which requires request-time data fetching.
+
+CREATING DYNAMIC ROUTES
+Pages that begin with [ and end with ] are dynamic routes in Next.js. For example [id].js. 
+Use function getStaticPaths in that file to return a list of possible values for the dynamic path. Ex 'id'. 
+Then we need getStaticProps again to fetch info based on the id. 
+
+API ROUTES
+Do Not Fetch an API Route from getStaticProps or getStaticPaths
+You should not fetch an API Route from getStaticProps or getStaticPaths. Instead, write your server-side code directly in getStaticProps or getStaticPaths (or call a helper function).
+Here’s why: getStaticProps and getStaticPaths run only on the server-side and will never run on the client-side. Moreover, these functions will not be included in the JS bundle for the browser. That means you can write code such as direct database queries without sending them to browsers. Read the Writing Server-Side code documentation to learn more.
+A good use case for API Routes is handling form input. For example, you can create a form on your page and have it send a POST request to your API Route. You can then write code to directly save it to your database. The API Route code will not be part of your client bundle, so you can safely write server-side code.
+Other good use cases include saving incoming data to the DB, securely communicating with a third-party API, or previewing draft content from a CMS (content management system - back-end-only content management system that acts primarily as a content repository. A headless CMS makes content accessible via an API for display on any device without a built-in, front-end or presentation layer.)
+API routes can also be dynamic. 
