@@ -60,3 +60,6 @@ Here’s why: getStaticProps and getStaticPaths run only on the server-side and 
 A good use case for API Routes is handling form input. For example, you can create a form on your page and have it send a POST request to your API Route. You can then write code to directly save it to your database. The API Route code will not be part of your client bundle, so you can safely write server-side code.
 Other good use cases include saving incoming data to the DB, securely communicating with a third-party API, or previewing draft content from a CMS (content management system - back-end-only content management system that acts primarily as a content repository. A headless CMS makes content accessible via an API for display on any device without a built-in, front-end or presentation layer.)
 API routes can also be dynamic. 
+
+DEPLOYMENT
+Vercel was developed by the people at Next.js and they reccomend using that to deploy next.js apps. 
