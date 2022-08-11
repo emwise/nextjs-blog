@@ -65,7 +65,22 @@ DEPLOYMENT
 Vercel was developed by the people at Next.js and they reccomend using that to deploy next.js apps. 
 https://nextjs-blog-emwise.vercel.app/ 
 
-first-post.js//this page is no longer needed because we will dynamically create the blog posts. 
+package.json file should have 
+{
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  }
+}
+
+then run npm run build, which builds the production application in the .next folder.
+then run npm run start, which starts a Node.js server that supports hybrid pages, serving both statically generated and server-side rendered pages, and API Routes.
+Tip: You can customize the start script in package.json to accept a PORT parameter by updating it as: "start": "next start -p $PORT".
+
+
+first-post.js
+//this page is no longer needed because we will dynamically create the blog posts. 
 // import Link from 'next/link';
 // import Head from 'next/head';
 // import Script from 'next/script'; //next/script is an extension of the HTML <script> element and optimizes when additional scripts are fetched and executed.
